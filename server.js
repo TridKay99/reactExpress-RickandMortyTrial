@@ -1,5 +1,6 @@
-const express = require('express');
 const cors = require('cors')
+const fetch = require('node-fetch');
+const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -13,22 +14,22 @@ app.get('/express_backend', (req, res) => {
   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
 })
 
-app.get('/rickandmorty', (req, result) => {
-  console.log("got a GET request for the index page");
-
-  const res = fetch ('https://rickandmortyapi.com/api/character/?page=19')
-  const data = res.json();
-  console.log(res)
-  response.json({
-    status: 'GET Request Recieved',
-    data: data.data
+// Getting rick and morty API and saying the data
+app.get('/rickandmorty',(req, res) => {
+  console.log("got a Get request for the Index page");
+  asyncFunc()
+  .then((data) => {
+    console.log(data);
+    res.json({
+      status: 'GET Request Recieved',
+      data: data
+    })
   })
 })
 
-app.get('/pokemon/:id', (req, res) => {
-  const poke = pokemon.find(poke => poke.id === parseInt(req.params.id));
-  if(!poke) res.status(404).send('not a fluffin pokemon')
+const asyncFunc = async() => {
+  const result = await fetch ('https://rickandmortyapi.com/api/character/?page=19')
+  const data = await result.json()
 
-  res.send(poke)
-  return;
-})
+  return data.results
+}
